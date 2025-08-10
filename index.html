@@ -1,68 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Dua Results Portal</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f2f2f2;
-      padding-top: 50px;
-    }
-    #login-box {
-      background-color: white;
-      width: 300px;
-      margin: auto;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-    }
-    input {
-      margin: 5px;
-      padding: 8px;
-      width: 90%;
-    }
-    button {
-      padding: 8px 15px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    #result {
-      margin-top: 20px;
-      display: none;
-    }
-    img {
-      max-width: 100%;
-      border-radius: 10px;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Candidate Results — Demo</title>
+<style>
+  :root{
+    --panel-blue:#0b66b3;
+    --panel-bg:#eaf3ff;
+    --card:#fff;
+    --muted:#4b5563;
+  }
+  html,body{height:100%;margin:0;font-family:Segoe UI,Roboto,Arial,sans-serif;background:#f7f9fb}
+  .wrap{max-width:1000px;margin:28px auto;padding:18px}
+  /* Demo watermark */
+  .demo-badge{
+    position:fixed; top:12px; left:12px;
+    background:rgba(0,0,0,0.06); padding:8px 10px; border-radius:6px;
+    font-weight:700; font-size:13px; z-index:1000;
+  }
+
+  /* big blue panel like screenshot */
+  .blue-panel{
+    background:var(--panel-blue);
+    color:white;
+    padding:28px 22px;
+    border-radius:4px;
+    box-shadow:0 3px 0 rgba(0,0,0,0.04) inset;
+  }
+  .panel-inner{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    max-width:900px;
+    margin:auto;
+  }
+
+  .left-col{flex:1}
+  .headline{font-size:20px;font-weight:700;margin:0 0 10px}
+  .sub{font-size:15px;margin:6px 0 14px;color:rgba(255,255,255,0.95)}
+
+  .form-row{display:flex; align-items:center; gap:10px}
+  label{
+    width:110px;
+    text-align:left;
+    font-weight:700;
+    font-size:15px;
+  }
+  .inputs{flex:1; display:flex; flex-direction:column; gap:12px;}
+  input[type="text"], input[type="password"]{
+    padding:10px 12px;
+    border-radius:3px;
+    border:1px solid #d1e3fb;
+    width:100%;
+    font-size:15px;
+  }
+
+  .right-col{min-width:110px; display:flex; align-items:center; justify-content:flex-end}
+  .login-btn{
+    background:#f3f5f7; color:#063358; border:none; padding:10px 18px; border-radius:3px; font-weight:700; cursor:pointer;
+    font-size:15px;
+  }
+  .login-btn:active{transform:translateY(1px)}
+
+  /* bottom friendly text */
+  .below{color:rgba(255,255,255,0.95); margin-top:18px; font-size:14px}
+
+  /* result area */
+  .result-wrap{max-width:900px;margin:18px auto; display:none}
+  .result-card{background:white;border:1px solid #dceafc;padding:18px;border-radius:4px}
+  .notfound{color:#b82b2b;font-weight:800;font-size:18px}
+  .explain{color:var(--muted); margin-top:8px}
+
+  /* image */
+  .surprise{margin-top:14px; display:none; text-align:center}
+  .surprise img{max-width:380px;border-radius:6px;border:1px solid #cfdff5}
+
+  @media (max-width:760px){
+    .panel-inner{flex-direction:column; align-items:stretch}
+    label{width:100%}
+    .right-col{justify-content:flex-start}
+  }
+</style>
 </head>
 <body>
+  <div class="demo-badge">DEMO — NOT REAL</div>
 
-  <div id="login-box">
-    <h2>Dua Results Portal</h2>
-    <input type="text" id="username" placeholder="Username"><br>
-    <input type="password" id="password" placeholder="Password"><br>
-    <button onclick="showResult()">Login</button>
+  <div class="wrap">
+    <div class="blue-panel" role="region" aria-label="Login panel">
+      <div class="panel-inner">
+        <div class="left-col">
+          <div class="headline">Enter your login details to access your results:</div>
+
+          <div class="form-row" style="margin-top:12px;">
+            <label for="username">Username:</label>
+            <div class="inputs">
+              <input id="username" type="text" placeholder="" aria-label="Username (as provided by your centre)">
+            </div>
+            <div class="right-col" style="display:none"></div>
+          </div>
+
+          <div class="form-row" style="margin-top:10px;">
+            <label for="password">Password:</label>
+            <div class="inputs">
+              <input id="password" type="password" placeholder="" aria-label="Password">
+            </div>
+
+            <!-- login button aligned to right (like screenshot) -->
+            <div class="right-col">
+              <button class="login-btn" id="loginBtn">login</button>
+            </div>
+          </div>
+
+          <div class="below">If you are having difficulty logging in, please contact your Centre.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- result area (hidden until login) -->
+    <div id="resultWrap" class="result-wrap" aria-live="polite">
+      <div class="result-card">
+        <div class="notfound">Result not found</div>
+        <div class="explain">We could not find any results for this candidate. Please check your details or contact your centre.</div>
+
+        <!-- surprise image (change src to your image file name) -->
+        <div class="surprise" id="surpriseDiv">
+          <img id="surpriseImg" src="funny.jpg" alt="Surprise" />
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div id="result">
-    <h3>Result Found!</h3>
-    <img src="yourimage.jpg" alt="Your Result">
-  </div>
+<script>
+  // This demo does NOT send credentials anywhere.
+  // On click, it hides the blue panel and shows the local result area.
+  document.getElementById('loginBtn').addEventListener('click', function(e){
+    e.preventDefault();
+    // hide the blue panel
+    document.querySelector('.blue-panel').style.display = 'none';
+    // show result card
+    document.getElementById('resultWrap').style.display = 'block';
 
-  <script>
-    function showResult() {
-      document.getElementById("login-box").style.display = "none";
-      document.getElementById("result").style.display = "block";
-    }
-  </script>
-
+    // reveal the surprise image after a short delay to simulate "loading"
+    setTimeout(function(){
+      const img = document.getElementById('surpriseImg');
+      // if image not available, keep it hidden safely
+      img.addEventListener('error', function(){ /* silent */ });
+      document.getElementById('surpriseDiv').style.display = 'block';
+    }, 600);
+  });
+</script>
 </body>
-</html>
+</html>  
