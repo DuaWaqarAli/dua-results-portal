@@ -124,7 +124,25 @@
   </div>
 
 <script>
-  <footer style="font-size: 12px; color: #555; text-align: center; margin-top: 50px; padding: 20px; border-top: 1px solid #ccc;">
+  // This demo does NOT send credentials anywhere.
+  // On click, it hides the blue panel and shows the local result area.
+  document.getElementById('loginBtn').addEventListener('click', function(e){
+    e.preventDefault();
+    // hide the blue panel
+    document.querySelector('.blue-panel').style.display = 'none';
+    // show result card
+    document.getElementById('resultWrap').style.display = 'block';
+
+    // reveal the surprise image after a short delay to simulate "loading"
+    setTimeout(function(){
+      const img = document.getElementById('surpriseImg');
+      // if image not available, keep it hidden safely
+      img.addEventListener('error', function(){ /* silent */ });
+      document.getElementById('surpriseDiv').style.display = 'block';
+    }, 600);
+  });
+</script>
+<footer style="font-size: 12px; color: #555; text-align: center; margin-top: 50px; padding: 20px; border-top: 1px solid #ccc;">
     Cambridge International Education is the name of our awarding body and a part of Cambridge University Press & Assessment, 
     but you may know us as Cambridge. See our Legal Notice for more information.
     <br><br>
@@ -136,5 +154,6 @@
     © 2025 Cambridge University Press & Assessment
     <br>
     Version 3.0.2-SNAPSHOT
-</footer>/body>
-    </html>  
+</footer>
+  /body>
+</html>
