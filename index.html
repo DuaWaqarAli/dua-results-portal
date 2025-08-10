@@ -1,60 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Dua Results Portal</title>
-<style>
+  <title>Dua Results Portal</title>
+  <style>
     body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: #f2f2f2;
-        padding-top: 100px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f2f2f2;
+      padding-top: 50px;
     }
-    .login-box {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        display: inline-block;
+    #login-box {
+      background-color: white;
+      width: 300px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
     }
     input {
-        display: block;
-        margin: 10px auto;
-        padding: 8px;
-        width: 80%;
+      margin: 5px;
+      padding: 8px;
+      width: 90%;
     }
     button {
-        padding: 10px 20px;
-        background: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
+      padding: 8px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
     }
     button:hover {
-        background: #45a049;
+      background-color: #45a049;
+    }
+    #result {
+      margin-top: 20px;
+      display: none;
     }
     img {
-        margin-top: 20px;
-        max-width: 300px;
-        border-radius: 10px;
+      max-width: 100%;
+      border-radius: 10px;
     }
-</style>
+  </style>
 </head>
 <body>
 
-<div class="login-box">
+  <div id="login-box">
     <h2>Dua Results Portal</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="showImage()">Login</button>
-    <div id="result"></div>
-</div>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button onclick="showResult()">Login</button>
+  </div>
 
-<script>
-function showImage() {
-    document.getElementById("result").innerHTML = 
-        '<img src="prank.jpg" alt="Funny Image">';
-}
-</script>
+  <div id="result">
+    <h3>Result Found!</h3>
+    <img src="yourimage.jpg" alt="Your Result">
+  </div>
+
+  <script>
+    function showResult() {
+      document.getElementById("login-box").style.display = "none";
+      document.getElementById("result").style.display = "block";
+    }
+  </script>
 
 </body>
 </html>
